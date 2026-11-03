@@ -27,7 +27,7 @@ while contador < quantidade:
     destino = int(input("Vértice de destino"))
 
     #Validar vértice fora do intervalo
-    if origem < 1 or origem > n < 1 or destino > n:
+    if origem < 1 or origem > n or destino < 1 or destino > n:
         print("Erro: Vértice inválido")
         print("Digite vértices entre 1 e", n)
         continue
