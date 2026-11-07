@@ -12,8 +12,10 @@ def bellman_ford(vertices,arestas,inicio):
 
         for origem, destino, peso in arestas: 
             if distancias[origem] != float('inf'):
-                nova = distancias[destino] = nova 
-                alterou = True 
+                nova = distancias[origem] + peso
+                if nova < distancias[destino]:
+                    distancias[destino] = nova
+                    alterou = True 
 
         print("distâncias: ", distancias)
         if not alterou: 
@@ -25,6 +27,7 @@ def bellman_ford(vertices,arestas,inicio):
             distancias[destino]):
             print("\nERRO: Existe ciclo negativo!")
             return None 
+    return distancias
 # =================
 # VALIDAÇÃO DE NÚMEROS
 # =================
@@ -68,27 +71,30 @@ while qtd_arestas > max_arestas:
         "Informe novamente: ", 0
     )
 
-    while len(arestas) < qtd_arestas:
-        print(f"\nAresta {len(arestas) + 1}")
-        origem = input("Origem: ").upper().strip()
-        destino = input("Destino: ").upper().strip()
+while len(arestas) < qtd_arestas:
+  print(f"\nAresta {len(arestas) + 1}")
+  origem = input("Origem: ").upper().strip()
+  destino = input("Destino: ").upper().strip()
 
-        # Validar vértices
-        if origem not in vertices or destino not in vertices: 
-            print("Erro! Vértice inexistente.")
-            continue
-        # Impedir laços 
-        if origem == destino: 
-            print("Erro! Origem e destino iguais.")
-            continue
-        # Impedir arestas repetidas 
-        if (origem, destino) in arestas_cadastradas:
-            print("Erro! Esta aresta já foi cadastrada.")
-            continue
-        peso = ler_inteiro("Peso da aresta: ")
-        arestas.append((origem,destino,peso))
-        arestas_cadastradas.add((origem, destino))
-        print("Aresta cadastrada com sucesso!")
+  # Validar vértices
+  if origem not in vertices or destino not in vertices:
+    print("Erro! Vértice inexistente.")
+    continue
+
+  # Impedir laços
+  if origem == destino:
+    print("Erro! Origem e destino iguais.")
+    continue
+
+  # Impedir arestas repetidas
+  if (origem, destino) in arestas_cadastradas:
+    print("Erro! Esta aresta já foi cadastrada.")
+    continue
+
+  peso = ler_inteiro("Peso da aresta: ")
+  arestas.append((origem, destino, peso))
+  arestas_cadastradas.add((origem, destino))
+  print("Aresta cadastrada com sucesso!")
 
 # =================
 # EXIBIR GRAFO 
