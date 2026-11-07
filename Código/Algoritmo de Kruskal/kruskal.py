@@ -45,3 +45,64 @@ def encontrar(pai, vertice):
         
         pai[raiz_v] = raiz_u 
         tamanho[raiz_u] += tamanho[raiz_v]
+        retunr True 
+    
+    def kruskal(n, arestas):
+        pai = list(rang(n))
+        tamanho = [1] * n 
+        arvore = []
+        custo_total = 0 
+        arestas_ordenadas = sorted(arestas, key=lambda arestas: aresta[2])
+        for u, v, peso in arestas_ordenadas: 
+            if unir(pai, tamanho, u, v):
+                arvore.append((u, v, peso))
+                custo_total += peso 
+            
+            if len(arvore) == n - 1:
+                break 
+
+        if len(arvore) != n - 1:
+            return None, None
+        
+        return arvore, custo_total 
+
+print("=== ALGORITMO DE KRUSKAL ===")
+print("Grafo Não Orientado")
+n = ler_inteiro("Quantidade de vértices: ", 1)
+max_arestas = n * (n - 1) // 2 
+m = ler_inteiro(f"Quantidade de arestas (0 a {max_arestas}): ", 0, max_arestas)
+
+arestas = []
+arestas_cadastradas = set()
+
+for i in range(m):
+    print(f"\nAresta {i + 1}")
+    while True: 
+        u = ler_inteiro(f"Vértice de origem (0 a {n - 1}): ", 0, n - 1)
+        v = ler_inteiro(f"Vértice de destino (0 a {n - 1}): ", 0, n - 1)
+
+        if u == v:
+            print("Erro! Não são permitidos laços.")
+            continue 
+        aresta = tuple(sorted((u, v)))
+        if aresta in arestas_cadastradas:
+            print("Erro! Esta aresta já foi cadastrada.")
+            continue    
+        break
+    peso = ler_peso()
+    arestas_cadastradas.add(aresta)
+    arestas.append((u, v, peso))
+print("\n=== GRAFO CADASTRADO ===")
+for u, v, peso in arestas:
+    print(f"{u} -- {v} | Peso: {peso:g}")
+arvore, custo = kruskal(n, arestas)
+print("\n=== ÁRVORE GERADORA MÍNIMA ===")
+if arvore is None: 
+    print("O grafo não é conexo.")
+    print("Não existe Árvore Geradora Mínima")
+    
+else: 
+    for u, v, peso in arvore: 
+        print(f"{u} -- {v} | Peso: {peso:g}")
+    print(f"\nPeso total da AGM: {custo:g}")
+    print(f"Quantidade de arestas da AGM: {len(arvore)}")
